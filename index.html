@@ -177,7 +177,16 @@
                     <div id="progress-dot" style="position:absolute; left:0; top:-4px; width:12px; height:12px; background:#333; border-radius:50%;"></div>
                 </div>
                 <div style="display:flex; justify-content:space-between; font-size:28px; cursor:pointer;">
-                    <span>🔀</span><span>⏮</span><span id="play-trigger">▶️</span><span>⏭</span><span>🔁</span>
+                    <img src="icons/shuffle.svg" style="width: 20px;" alt="shuffle">
+                    <img src="icons/skip-back.svg" style="width: 20px;" alt="back">
+                    
+                    <!-- Tombol Play Utama -->
+                    <div id="play-trigger" style="cursor: pointer;">
+                        <img src="icons/play.svg" id="play-icon" style="width: 20px;" alt="play">
+                    </div>
+
+                    <img src="icons/skip-forward.svg" style="width: 20px;" alt="forward">
+                    <img src="icons/repeat.svg" style="width: 20px;" alt="repeat">
                 </div>
                 <!-- ganti ini untuk musiknya -->
                 <audio id="birthday-song"><source src="song/My World.mp3" type="audio/mpeg"></audio>
@@ -206,7 +215,7 @@
         <!-- SECTION 3 -->
         <div class="section">
             <img src="images/ariel-3.png" class="ariel-cake-last" alt="Cake">
-            <div style="position:absolute; top:65px; right:30px; width:180px; font-size:16px; line-height:1.4;">Ok, itu saja <i>babe</i>! Nikmati harimu! ✨</div>
+            <div style="position:absolute; top:65px; right:30px; width:180px; font-size:16px; line-height:1.4;">Ok, that's all <i>babe</i> ! Enjoy your special day to the fullest! ✨</div>
             <div class="sign-wrapper">
                 <div style="font-family:'Gellatio'; font-size:32px; color:#2a1b9a;">XOXO,</div>
                 <div style="font-family:'Magnolia Script'; font-size:24px; color:#2a1b9a;">your lifelong bestie</div>
@@ -219,11 +228,12 @@
         window.onload = function() {
             const song = document.getElementById("birthday-song");
             const playBtn = document.getElementById("play-trigger");
+            const playIcon = document.getElementById("play-icon"); 
             const progressDot = document.getElementById("progress-dot");
             if (playBtn && song) {
                 playBtn.onclick = function() {
-                    if (song.paused) { song.play(); this.innerHTML = "⏸"; }
-                    else { song.pause(); this.innerHTML = "▶️"; }
+                    if (song.paused) { song.play(); playIcon.src = "icons/pause.svg"; }
+                    else { song.pause(); playIcon.src = "icons/play.svg"; }
                 };
                 song.ontimeupdate = function() {
                     if (song.duration) {
