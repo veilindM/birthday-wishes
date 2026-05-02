@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Card for Angel</title>
+    <style>
+
+        @font-face {
+            font-family: 'Magnolia Script';
+            src: url('fonts/magnolia-script.regular.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+          @font-face {
+            font-family: 'Gellatio';
+            src: url('fonts/Gellatio.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        /* CSS RESET & BODY */
+        body {
+                margin: 0;
+                padding: 0;
+                /* BACKGROUND UNTUK SELURUH LAYAR DEVICE */
+                background-image: url('images/background.png');
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+                display: flex;
+                justify-content: flex-start;
+                align-items: flex-start;
+                /* min-height: 100vh; */
+                overflow: hidden;
+        }
+
+        /* TRICK RESPONSIVE: Scaling untuk layar kecil */
+        @media (max-width: 450px) {
+            .card-container {
+            transform: none;
+            }
+        }
+
+        /* KONTAINER UTAMA */
+        .card-container {
+            /* Paksa mengikuti lebar dan tinggi layar HP */
+            width: 100vw; 
+            height: 100vh; 
+            
+            /* Hapus bayangan dan border agar tidak terlihat seperti 'kartu' di dalam bingkai */
+            box-shadow: none; 
+            border: none;
+            
+            background-image: url('images/background.png');
+            background-size: cover;
+            background-position: center;
+            
+            position: relative;
+            /* Tetap gunakan overflow: hidden agar tidak ada scrollbar muncul di HP */
+            overflow: hidden; 
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* HELPER: POSITION ABSOLUTE */
+        .element {
+            position: absolute;
+        }
+
+        /* --- HEADER SECTION --- */
+        .header-text {
+            position: absolute;
+            top: -20px;
+            width: 100%;
+            text-align: center;
+            z-index: 20;
+        }
+
+        .name-wrapper {
+            display: inline-block;
+            position: relative;
+            width: 95vw;
+            margin-top: -80px;
+        }
+
+        .hb-text {
+            position: absolute;
+            top: 115px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            z-index: 999;
+            font-family: 'Gellatio';
+            font-size: 36px;
+            color: #2a1b9a;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.5);
+        }
+
+        .shell-bg {
+            width: 100%;
+            display: block;
+            z-index: 1;
+            margin-top: 10px;
+        }
+
+        .name-text {
+            font-family: 'Magnolia Script', cursive;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            font-size: 42px;
+            color: #2a1b9a;
+            white-space: nowrap;
+        }
+
+        /* --- CHARACTER WRAPPERS (Ariel & Fish) --- */
+        .mermaid-wrapper {
+            position: absolute;
+            top: 30px; 
+            left: -80px;
+            width: 280px;
+            z-index: 100;
+        }
+
+        .fish-wrapper {
+            position: absolute;
+            top: 50px; 
+            right: -20px;
+            width: 220px;
+            z-index: 1;
+        }
+
+        .mermaid-img {
+            width: 100%;
+            display: block;
+            
+        }
+
+        .balloon-ariel {
+            position: absolute;
+            width: 180px;
+            top: 0px;
+            left: 8px;
+            z-index: 15;
+            transform: rotate(-16deg);
+        }
+
+        .balloon-fish {
+            position: absolute;
+            width: 220px;
+            top: -80px;
+            right: -60px;
+            z-index: -1;
+            transform: rotate(5deg);
+        }
+
+        /* --- CHAT BUBBLES --- */
+        .chat-wrapper {
+            position: absolute;
+            width: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 12;
+        }
+
+        .bubble-img {
+            width: 100%;
+            display: block;
+            z-index: 1;
+        }
+
+        .bubble-text {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            width: 40%;
+            text-align: center;
+            font-size: 13px;
+            line-height: 1.3;
+            font-weight: bold;
+        }
+
+        .bubble-text-2 {
+            position: absolute;
+            top: 43%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            width: 40%;
+            text-align: center;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .chat-1 { top: 120px; left: 110px; }
+        .chat-2 { bottom: 90px; right: 0px; }
+
+        /* Flip Utility */
+        .flip-element { transform: scale(-1, -1); }
+
+        /* --- PHOTO SECTION --- */
+        .photo-container {
+            position: absolute;
+            top: 250px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 300px;
+        }
+
+        .photo-frame {
+            position: absolute;
+            top: 0;
+            left: -90px;
+            width: 380px;
+            z-index: 10;
+        }
+
+        .photo-user {
+            position: absolute;
+            top: 110px;
+            left: 40px;
+            width: 130px;
+            z-index: 5;
+            border-radius: 5px;
+        }
+
+        .mermaid-2 {
+            position: absolute;
+            bottom: -100px;
+            left: 80px;
+            width: 230px;
+            z-index: 11;
+        }
+
+        .side-text {
+            position: absolute;
+            top: 360px;
+            right: 25px;
+            width: 160px;
+            font-size: 12px;
+            color: #2a1b9a;
+            font-weight: bold;
+            line-height: 1.4;
+            z-index: 12;
+        }
+
+        .bubble-float {
+            position: absolute;
+            width: 100px; /* Sesuaikan ukuran gelembung kecil */
+            top: 140px;   /* Sesuaikan posisi agar terlihat mengambang */
+            right: 90px;
+            transform: translateX(-50%);
+            z-index: 1;  /* Taruh di belakang teks bubble */
+        }
+
+        .bubble-float-2 {
+            position: absolute;
+            width: 100px; /* Sesuaikan ukuran gelembung kecil */
+            bottom: 150px;   /* Sesuaikan posisi agar terlihat mengambang */
+            right: 40px;
+            z-index: 1;  /* Taruh di belakang teks bubble */
+        }
+
+        /* --- BOTTOM DECOR --- */
+        .lobster {bottom: 0px; left: 50%; transform: translateX(-50%); width: 320px; z-index: 15; }
+        .shell-left { bottom: 0px; left: -100px; width: 320px; z-index: 14; }
+        .shell-right { bottom: 0px; right: -100px; width: 320px; z-index: 14; }
+
+        /* Floating Bubbles Decor */
+        .bubble-decor {
+            position: absolute;
+            width: 250px;
+            opacity: 0.5;
+            z-index: 0;
+        }
+        .b-left { top: -120px; left: -50px; }
+        .b-right { top: -120px; right: -50px; }
+
+    </style>
+</head>
+<body>
+
+    <div class="card-container">
+        <!-- Background Bubbles -->
+        <img src="images/bubbles.png" class="bubble-decor b-left" alt="decor">
+        <img src="images/bubbles.png" class="bubble-decor b-right" alt="decor">
+
+        <!-- Header -->
+        <div class="header-text">
+            <div class="name-wrapper">
+                <div class="hb-text">Happy Birthday</div>
+                <img src="images/shell-name.png" class="shell-bg" alt="Shell">
+                <span class="name-text">Angel</span>
+            </div>
+        </div>
+
+        <!-- Characters -->
+        <div class="mermaid-wrapper">
+            <img src="images/ariel-1.png" class="mermaid-img" alt="Ariel">
+            <img src="images/balloon.png" class="balloon-ariel" alt="Balloon">
+        </div>
+
+        <div class="fish-wrapper">
+            <img src="images/fish.png" class="mermaid-img" alt="Flounder">
+            <img src="images/balloon.png" class="balloon-fish" alt="Balloon">
+        </div>
+
+        <!-- Chat 1 -->
+        <div class="chat-wrapper chat-1">
+            <img src="images/chat-bubble.png" class="bubble-img" alt="Bubble">
+            <img src="images/bubble.png" class="bubble-float flip-element" alt="Bubble">
+            <div class="bubble-text">
+                I know this is freaking childish, <br> but let's have some fun!
+            </div>
+        </div>
+
+        <!-- Photo Area -->
+        <div class="photo-container">
+            <img src="images/star-frame.png" class="photo-frame" alt="Frame">
+            <img src="images/angel.jpg" class="photo-user" alt="Angel">
+            <img src="images/ariel-2.png" class="mermaid-2" alt="Ariel 2">
+        </div>
+
+        <!-- Side Text -->
+        <div class="side-text">
+            OMG, I got no photo of you, I hope this is enough 😭<br><br>
+            WOAHH! look at that independent woman working. I can see a future boss here 😎
+        </div>
+
+        <!-- Chat 2 -->
+        <div class="chat-wrapper chat-2">
+            <img src="images/chat-bubble.png" class="bubble-img flip-element" alt="Bubble">
+            <img src="images/bubble.png" class="bubble-float-2 flip-element" alt="Bubble">
+            <div class="bubble-text-2">
+                Hey Yoo! Forget about the music lol! Let's dance!
+            </div>
+        </div>
+
+        <!-- Footer Decor -->
+        <img src="images/shell.png" class="element shell-left" alt="Shell">
+        <img src="images/lobster.png" class="element lobster" alt="Lobster">
+        <img src="images/shell.png" class="element shell-right" alt="Shell">
+    </div>
+
+</body>
+</html>

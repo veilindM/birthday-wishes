@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Card - The End</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('images/background.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .card-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* --- CHARACTER SECTION --- */
+        .mermaid-cake {
+            position: absolute;
+            top: -50px;
+            left: -120px;
+            width: 400px;
+            z-index: 5;
+        }
+
+        /* --- TEXT SECTION --- */
+        .closing-text {
+            position: absolute;
+            top: 65px;
+            right: 30px;
+            width: 180px;
+            font-size: 16px;
+            color: #333;
+            line-height: 1.4;
+            text-align: left;
+        }
+
+        .closing-text i {
+            font-weight: bold;
+        }
+
+        .signature-wrapper {
+            position: absolute;
+            top: 220px;
+            right: 40px;
+            text-align: right;
+        }
+
+        .xoxo {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 32px;
+            color: #2a1b9a;
+            margin-bottom: 5px;
+        }
+
+        .bestie-text {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 24px;
+            color: #2a1b9a;
+        }
+
+        /* Responsive scaling untuk laptop agar tetap terlihat proporsional */
+        @media (min-width: 450px) {
+            .card-container {
+                width: 400px;
+                height: 800px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card-container">
+        <!-- Karakter Ariel bawa kue -->
+        <img src="images/ariel-3.png" class="mermaid-cake" alt="Ariel Cake">
+
+        <!-- Pesan Penutup -->
+        <div class="closing-text">
+            Ok, that's all <i>babe</i>! Enjoy your special day to the fullest! ✨
+        </div>
+
+        <!-- Tanda Tangan -->
+        <div class="signature-wrapper">
+            <div class="xoxo">XOXO,</div>
+            <div class="bestie-text">your lifelong bestie</div>
+        </div>
+    </div>
+
+</body>
+</html>

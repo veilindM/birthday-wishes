@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Card - Page 2</title>
+    <!-- Memanggil Google Fonts -->
+    
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+        
+        /* CSS RESET & BODY */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            /* BACKGROUND UNTUK SELURUH LAYAR DEVICE */
+            background-image: url('images/background.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            
+            overflow-x: hidden;
+        }
+
+        /* KONTAINER UTAMA */
+        .card-container {
+            /* Paksa mengikuti lebar dan tinggi layar HP */
+            width: 100vw; 
+            height: 100vh; 
+            
+            /* Hapus bayangan dan border agar tidak terlihat seperti 'kartu' di dalam bingkai */
+            box-shadow: none; 
+            border: none;
+            
+            background-image: url('images/background.png');
+            background-size: cover;
+            background-position: center;
+            
+            position: relative;
+            
+            /* Tetap gunakan overflow: hidden agar tidak ada scrollbar muncul di HP */
+            overflow: hidden; 
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* RESPONSIVE SCALING */
+        @media (max-width: 450px) {
+            .card-container {
+                transform: scale(0.9);
+                transform-origin: center center;
+            }
+        }
+
+        /* --- MUSIC PLAYER SECTION --- */
+        .music-player {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .album-wrapper {
+            position: relative; /* WAJIB: Agar 'top' aktif dan menjadi acuan si foto */
+            width: 100%;
+            height: 300px;    /* Memberi ruang fisik agar teks di bawah tidak naik */
+            margin-top: -100px; /* Gunakan margin untuk mengatur jarak dari atas layar */
+        }
+
+        .album-photo {
+            position: absolute;
+            top: 50%;         /* Sekarang dia akan nurut di tengah kotak merah */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Controls */
+        .controls-container {
+            position: relative; 
+    /* Karena album-wrapper punya height 300px, 
+       kontrol ini otomatis akan duduk di bawah kotak merah */
+            margin-top: -10px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 3px;
+            background: #333;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .progress-dot {
+            position: absolute;
+            left: 35%;
+            top: -4px;
+            width: 12px;
+            height: 12px;
+            background: #333;
+            border-radius: 50%;
+        }
+
+        .control-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .icon { width: 22px; cursor: pointer; }
+        .play-btn { width: 50px; cursor: pointer; }
+
+        /* --- MESSAGE TEXT --- */
+        .message-text {
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            position: absolute;
+            width: 85%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #222;
+            z-index: 10;
+        }
+
+        .top-msg { top: 310px; }
+        .bottom-msg { bottom: 60px; font-weight: 500; }
+
+        /* --- MAIN PHOTO SECTION --- */
+        .photo-main-wrapper {
+            position: absolute;
+            top: 400px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            height: 300px;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .main-frame {
+            width: 100%;
+            display: block;
+            position: relative;
+            z-index: 5;
+        }
+
+        .main-photo {
+            position: absolute;
+            top: 6%;
+            left: 6%;
+            width: 88%;
+            height: 80%;
+            object-fit: cover;
+            z-index: 4;
+        }
+
+        .paper-clip {
+            position: absolute;
+            top: -15px;
+            left: -5px;
+            width: 35px;
+            z-index: 10;
+            transform: rotate(-10deg);
+        }
+
+        /* Seaweed Decor */
+        .seaweed {
+            position: absolute;
+            bottom: -60px;
+            width: 400px;
+            z-index: 6;
+        }
+
+        .seaweed-l { left: -180px; }
+        .seaweed-r { right: -180px;transform: scaleX(-1);}
+
+        /* Floating Stars Decor */
+        .stars-decor {
+            position: absolute;
+            width: 30px;
+            
+        }
+
+        .stars-group {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Agar tidak menghalangi klik pada tombol music */
+            
+        }
+
+        .star {
+            position: absolute;
+            width: 260px; /* Atur ukuran bintang */
+            
+        }
+
+        /* Posisikan satu per satu di sebelah teks */
+        .s1 { top: 220px; left: -110px; transform: scaleX(-1); }
+        .s2 { top: 190px; right: -110px; }
+    </style>
+</head>
+<body>
+
+    <div class="card-container">
+        
+        <!-- Music Player Area -->
+        <div class="music-player">
+            
+                <div class="album-wrapper">
+                    <img src="images/taylor-polaroid.png" class="album-photo" alt="Taylor 22">
+                </div>
+            
+
+            <div class="controls-container">
+                <div class="progress-bar">
+                    <div class="progress-dot"></div>
+                </div>
+                <div class="control-buttons">
+                    <!-- Gunakan Span dengan Emoji jika gambar tidak ada -->
+                    <span class="icon-fallback">🔀</span> 
+                    <span class="icon-fallback">⏮</span>
+                    <span class="play-btn-fallback" id="play-trigger" style="cursor:pointer;">▶️</span>
+                    <span class="icon-fallback">⏭</span>
+                    <span class="icon-fallback">🔁</span>
+                </div>
+                <audio id="birthday-song">
+                <source src="song/My World.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+        </div>
+
+        <div class="stars-group">
+            <img src="images/rosegold-stars.png" class="star s1" alt="star">
+            <img src="images/rosegold-stars.png" class="star s2" alt="star">
+        </div>
+
+        <!-- Middle Message -->
+        <div class="message-text top-msg">
+            Yeayy! Happy 22 Birthday My Bestie! <br>
+            Wishing you a wonderful year ahead filled with joy, success, and countless beautiful moments.
+        </div>
+
+        <!-- Main Photo Galery -->
+        <div class="photo-main-wrapper">
+            <img src="images/dummy.png" class="main-photo" alt="Angel"> 
+            <img src="images/seaweed.png" class="seaweed seaweed-l" alt="Decor">
+            <img src="images/seaweed.png" class="seaweed seaweed-r" alt="Decor"> 
+        </div>
+
+        <!-- Bottom Message -->
+        <div class="message-text bottom-msg">
+            Thank you for all the ups and downs that we've been through together. Hope our friendship stays unbreakable. <br>
+            <i>We should really get a photo together, FR!!!</i>
+        </div>
+
+    </div>
+
+    <script>
+       window.onload = function() {
+        const song = document.getElementById("birthday-song");
+        const playBtn = document.getElementById("play-trigger");
+        const progressDot = document.querySelector(".progress-dot");
+
+        if (playBtn && song) {
+            playBtn.onclick = function() {
+                if (song.paused) {
+                    song.play();
+                    this.innerHTML = "⏸";
+                } else {
+                    song.pause();
+                    this.innerHTML = "▶️";
+                }
+            };
+
+            song.ontimeupdate = function() {
+                if (song.duration) {
+                    let p = (song.currentTime / song.duration) * 100;
+                    progressDot.style.left = p + "%";
+                }
+            };
+        }
+    };
+    </script>
+
+</body>
+</html>
