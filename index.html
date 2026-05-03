@@ -1,256 +1,456 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birthday Card for Angel - Final Version</title>
-    <style>
-        /* --- 1. FONT SETUP --- */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For Angel 💌</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        @font-face {
-            font-family: 'Magnolia Script';
-            src: url('fonts/magnolia-script.regular.otf') format('opentype');
-            font-weight: normal; font-style: normal; font-display: swap;
-        }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-image: url('images/background.png');
+      background-size: cover;
+      background-position: center;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+    }
 
-        @font-face {
-            font-family: 'Gellatio';
-            src: url('fonts/Gellatio.ttf') format('truetype');
-            font-weight: normal; font-style: normal; font-display: swap;
-        }
+    /* fallback background jika gambar belum ada */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 40%, #e8d5f0 100%);
+      z-index: -1;
+    }
 
-        /* --- 2. GLOBAL LAYOUT --- */
-        body {
-            margin: 0; padding: 0;
-            background-image: url('images/background.png');
-            background-size: cover; background-position: center;
-            background-attachment: fixed;
-            display: flex; justify-content: center;
-            min-height: 100vh;
-            font-family: 'Poppins', sans-serif;
-            overflow-x: hidden;
-        }
+    /* ===================== CONFETTI ===================== */
+    #confetti-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 999;
+    }
 
-        .long-card-wrapper {
-            width: 100vw;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    /* ===================== SCENE ===================== */
+    #scene {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100vw;
+      height: 100vh;
+    }
 
-        /* KUNCI SETIAP HALAMAN DI SINI */
-        .section {
-            width: 100%;
-            height: 180vw;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding-bottom: 10vw;
-        }
+    /* ===================== ENVELOPE ===================== */
+    #envelope-wrap {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.3s ease, opacity 0.4s ease;
+      animation: floatAnim 3s ease-in-out infinite;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-        /* --- 3. SECTION 1: MERMAID THEME --- */
-        .header-container { position: absolute; top: 0; left: 0; width: 100%; text-align: center; z-index: 10; }
-        .name-wrapper { display: inline-block; position: relative; width: 95vw; margin-top: -80px; z-index: 1; }
-        
-        .hb-text { 
-            position: absolute; top: 5vw; left: 50%; transform: translateX(-50%); 
-            width: 100%; z-index: 9999; 
-            font-family: 'Gellatio'; font-size: 36px; color: #2a1b9a; text-align: center;
-        }
-        
-        .name-text { 
-            font-family: 'Magnolia Script', cursive; position: absolute; 
-            top: 48%; left: 50%; transform: translate(-50%, -50%); 
-            z-index: 100; font-size: 42px; color: #2a1b9a; white-space: nowrap; 
-            background: linear-gradient(to right, #004AAD, #CB6CE6);
-            background-clip: text;
-            color: transparent;
-            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.1));
-        }
+    @keyframes floatAnim {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-10px); }
+    }
 
-        .message-text {
-            font-family: 'Poppins', sans-serif;
-            font-size: 14px;
-            font-weight: 400;
-            position: absolute;
-            width: 85%;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            font-size: 15px;
-            line-height: 1.6;
-            color: #222;
-            z-index: 10;
-        }
-        
-        .mermaid-ariel { position: absolute; top: 30px; left: -80px; width: 280px; z-index: 50; }
-        .fish-flounder { position: absolute; top: 50px; right: -20px; width: 220px; z-index: 50; } /* DI DEPAN PITA */
+    #envelope-wrap.clicked {
+      animation: none;
+    }
 
-        /* Chat Bubbles */
-        .chat-1 { position: absolute; top: 30vw; left: 110px; width: 280px; z-index: 50; }
-        .chat-2 { position: absolute; bottom: 15vw; right: 0px; width: 280px; z-index: 50; }
-        .bubble-inner { position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%); width: 45%; text-align: center; font-size: 13px; font-weight: bold; }
-        .top-msg { top: 310px; }
-        .bottom-msg { bottom: 60px; font-weight: 500; }
+    #envelope-wrap.fade-out {
+      opacity: 0;
+      transform: scale(0.85);
+      pointer-events: none;
+    }
 
-        /* Foto Frame Section 1 */
-        .photo-s1-box { position: absolute; top: 55vw; left: 50%; transform: translateX(-50%); width: 100%; height: 300px; }
-        .side-text-s1 { position: absolute; top: 360px; right: 25px; width: 160px; font-size: 12px; color: #2a1b9a; font-weight: bold; line-height: 1.4; text-align: left; }
+    /* Envelope body */
+    .env-body {
+      position: relative;
+      width: 280px;
+      height: 185px;
+      background: #f9d0e3;
+      border-radius: 4px 4px 14px 14px;
+      border: 2px solid #e8a8c8;
+      overflow: visible;
+    }
 
-        /* Lobster & Shells di Dasar Section 1 */
-        .lobster-footer { position: absolute; bottom: -10vw; left: 50%; transform: translateX(-50%); width: 320px; z-index: 15; }
-        .shell-footer { position: absolute; bottom: -10vw; width: 320px; z-index: 14; }
+    /* Flap atas */
+    .env-flap {
+      position: absolute;
+      top: -2px; left: -2px;
+      width: 0; height: 0;
+      border-left: 142px solid transparent;
+      border-right: 142px solid transparent;
+      border-top: 96px solid #f0b8d0;
+      transform-origin: top center;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 10;
+      filter: drop-shadow(0 3px 5px rgba(180,80,120,0.12));
+    }
 
-        /* --- 4. SECTION 2: MUSIC & TAYLOR --- */
-        .player-wrapper { position: absolute; top: 50px; left: 50%; transform: translateX(-50%); width: 280px; text-align: center; }
-        .taylor-img { width: 300px; margin-top: -100px;}
-        
-        /* Seaweed & Dummy Section 2 */
-        .photo-dummy-box { position: absolute; top: 380px; left: 50%; transform: translateX(-50%); width: 450px; height: 300px; }
-        .seaweed-l { position: absolute; bottom: -30px; left: -50px; width: 300px; z-index: 6; }
-        .seaweed-r { position: absolute; bottom: -30px; right: -50px; width: 300px; z-index: 6; transform: scaleX(-1); }
+    .env-flap.open {
+      transform: rotateX(180deg);
+    }
 
-        /* Stars Section 2 */
-        .star-l { position: absolute; top: 220px; left: -110px; width: 260px; transform: scaleX(-1); }
-        .star-r { position: absolute; top: 190px; right: -110px; width: 260px; }
+    /* Segitiga kiri & kanan bawah */
+    .env-left {
+      position: absolute;
+      bottom: 0; left: -2px;
+      width: 0; height: 0;
+      border-bottom: 92px solid #f0b0cc;
+      border-right: 142px solid transparent;
+    }
+    .env-right {
+      position: absolute;
+      bottom: 0; right: -2px;
+      width: 0; height: 0;
+      border-bottom: 92px solid #e8a0c0;
+      border-left: 142px solid transparent;
+    }
 
-        /* --- 5. SECTION 3: THE END --- */
-        .ariel-cake-last { position: absolute; top: -50px; left: -120px; width: 400px; }
-        .sign-wrapper { position: absolute; top: 220px; right: 40px; text-align: right; }
+    /* Seal hati di tengah flap */
+    .env-seal {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -20%);
+      font-size: 28px;
+      z-index: 11;
+      transition: opacity 0.3s ease;
+      user-select: none;
+    }
 
-        /* Laptop Responsive */
-        @media (min-width: 450px) {
-            .long-card-wrapper { width: 400px; box-shadow: 0 0 50px rgba(0,0,0,0.2); }
-        }
-    </style>
+    /* Kartu kecil di dalam amplop */
+    #mini-card {
+      position: absolute;
+      left: 50%;
+      top: 14px;
+      transform: translateX(-50%);
+      width: 220px;
+      height: 130px;
+      background: white;
+      border-radius: 8px;
+      border: 1.5px solid #f0b8d0;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      opacity: 0;
+      transition: top 0.8s cubic-bezier(0.34, 1.3, 0.64, 1), opacity 0.4s ease;
+    }
+
+    #mini-card.peek {
+      top: -75px;
+      opacity: 1;
+    }
+
+    #mini-card .mc-star { font-size: 18px; }
+    #mini-card .mc-text {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      text-align: center;
+      font-size: 15px;
+      color: #c0588a;
+    }
+
+    /* Hint "tap to open" */
+    #hint {
+      margin-top: 18px;
+      font-size: 13px;
+      color: #c06090;
+      letter-spacing: 0.5px;
+      transition: opacity 0.4s ease;
+      animation: hintPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes hintPulse {
+      0%, 100% { opacity: 0.5; }
+      50%       { opacity: 1; }
+    }
+
+    /* ===================== FULL CARD ===================== */
+    #full-card {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      opacity: 0;
+      transform: scale(0.25);
+      transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.34, 1.4, 0.64, 1);
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    #full-card.show {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: all;
+    }
+
+    #full-card .fc-emoji { font-size: 42px; animation: bounceIn 0.6s 0.3s both; }
+
+    @keyframes bounceIn {
+      0%   { transform: scale(0) rotate(-20deg); }
+      70%  { transform: scale(1.2) rotate(5deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+
+    #full-card .fc-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      color: #c84890;
+      text-align: center;
+      line-height: 1.3;
+      animation: fadeUp 0.5s 0.4s both;
+    }
+
+    #full-card .fc-sub {
+      font-size: 14px;
+      font-weight: 300;
+      color: #a06080;
+      text-align: center;
+      line-height: 1.7;
+      max-width: 260px;
+      animation: fadeUp 0.5s 0.5s both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    #full-card .fc-btn {
+      margin-top: 8px;
+      padding: 13px 36px;
+      background: #f0a8c8;
+      border: none;
+      border-radius: 32px;
+      font-size: 15px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      color: #7a2050;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      animation: fadeUp 0.5s 0.6s both;
+      box-shadow: 0 4px 20px rgba(240,100,160,0.25);
+    }
+
+    #full-card .fc-btn:hover {
+      background: #e888b8;
+      transform: scale(1.05);
+      box-shadow: 0 6px 24px rgba(240,100,160,0.35);
+    }
+
+    #full-card .fc-btn:active { transform: scale(0.97); }
+
+    /* Decorative dots di background full card */
+    .bg-dot {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99;
+      opacity: 0;
+      animation: dotFadeIn 0.5s forwards;
+    }
+
+    @keyframes dotFadeIn {
+      to { opacity: var(--dot-opacity, 0.4); }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="long-card-wrapper">
-        
-        <!-- SECTION 1 -->
-        <div class="section">
-            <div class="hb-text">Happy Birthday</div>
-            <div class="header-container">
-                <div class="name-wrapper">
-                    <img src="images/shell-name.png" style="width:100%; margin-top:-10px;" alt="Shell">
-                    <span class="name-text">Angel</span>
-                </div>
-            </div>
+  <canvas id="confetti-canvas"></canvas>
 
-            <div class="mermaid-ariel">
-                <img src="images/ariel-1.png" style="width:100%" alt="Ariel">
-                <img src="images/balloon.png" style="position:absolute; width:180px; top:0; left:8px; z-index:15; transform:rotate(-16deg);" alt="Balloon">
-            </div>
+  <div id="scene">
 
-            <div class="fish-flounder">
-                <img src="images/fish.png" style="width:100%" alt="Fish">
-                <img src="images/balloon.png" style="position:absolute; width:220px; top:-80px; right:-60px; z-index:-1;" alt="Balloon">
-            </div>
-
-            <div class="chat-1">
-                <img src="images/chat-bubble.png" style="width:100%" alt="Bubble">
-                <div class="bubble-inner">I know this is childish, but let's have fun!</div>
-            </div>
-
-            <div class="photo-s1-box">
-                <img src="images/star-frame.png" style="position:absolute; left:-90px; width:380px; z-index:10;" alt="Frame">
-                <img src="images/angel.jpg" style="position:absolute; top:110px; left:40px; width:130px; z-index:5; border-radius:5px;" alt="Angel">
-            </div>
-
-            <div class="side-text-s1">
-                OMG, I got no photo of you, I hope this is enough 😭<br><br>
-                Look at that independent woman working! I can see a future boss here 😎
-            </div>
-
-            <div class="chat-2">
-                <img src="images/chat-bubble.png" style="width:100%; transform:scale(-1,-1)" alt="Bubble">
-                <div class="bubble-inner" style="top:43%">Forget the music! Let's dance!</div>
-            </div>
-
-            <img src="images/shell.png" class="shell-footer" style="left:-100px" alt="Shell">
-            <img src="images/lobster.png" class="lobster-footer" alt="Lobster">
-            <img src="images/shell.png" class="shell-footer" style="right:-100px" alt="Shell">
+    <!-- AMPLOP -->
+    <div id="envelope-wrap" onclick="openEnvelope()">
+      <div class="env-body">
+        <div class="env-flap" id="flap"></div>
+        <div class="env-left"></div>
+        <div class="env-right"></div>
+        <div class="env-seal" id="seal">💌</div>
+        <div id="mini-card">
+          <span class="mc-star">✨</span>
+          <span class="mc-text">For my partner in almost everything, Angel</span>
+          <span class="mc-star">✨</span>
         </div>
-
-        <!-- SECTION 2 -->
-        <div class="section">
-            <div class="player-wrapper">
-                <img src="images/taylor-polaroid.png" class="taylor-img" alt="Album">
-                <div style="margin-top: -40px; background:#333; height:3px; position:relative;">
-                    <div id="progress-dot" style="position:absolute; left:0; top:-4px; width:12px; height:12px; background:#333; border-radius:50%;"></div>
-                </div>
-                <div style="display:flex; justify-content:space-between; font-size:28px; cursor:pointer;">
-                    <img src="icons/shuffle.svg" style="width: 20px;" alt="shuffle">
-                    <img src="icons/skip-back.svg" style="width: 20px;" alt="back">
-                    
-                    <!-- Tombol Play Utama -->
-                    <div id="play-trigger" style="cursor: pointer;">
-                        <img src="icons/play.svg" id="play-icon" style="width: 20px;" alt="play">
-                    </div>
-
-                    <img src="icons/skip-forward.svg" style="width: 20px;" alt="forward">
-                    <img src="icons/repeat.svg" style="width: 20px;" alt="repeat">
-                </div>
-                <!-- ganti ini untuk musiknya -->
-                <audio id="birthday-song"><source src="song/22.mp3" type="audio/mpeg"></audio>
-            </div>
-
-            <img src="images/rosegold-stars.png" class="star-l" alt="star">
-            <img src="images/rosegold-stars.png" class="star-r" alt="star">
-            <div class="message-text top-msg">
-            Yeayy! Happy 22 Birthday My Bestie! <br>
-            Wishing you a wonderful year ahead filled with joy, success, and countless beautiful moments.
-            </div>
-
-            <div class="photo-dummy-box">
-                <!-- ganti ini untuk photo aibnya -->
-                <img src="images/polaroid.png" style="position:absolute; top:6%; left:6%; width:88%; height:80%; object-fit:cover; z-index:4;" alt="Photo">
-                <img src="images/seaweed.png" class="seaweed-l" alt="Seaweed">
-                <img src="images/seaweed.png" class="seaweed-r" alt="Seaweed">
-            </div>
-            
-            <div style="position:absolute; bottom: 5vw; width:85%; left:50%; transform:translateX(-50%); text-align:center; font-size:14px; font-weight:500;">
-                Thank you for all the ups and downs that we've been through together. Hope our friendship stays unbreakable. <br>
-            <i>We should really get a photo together, FR!!!</i>
-            </div>
-        </div>
-
-        <!-- SECTION 3 -->
-        <div class="section">
-            <img src="images/ariel-3.png" class="ariel-cake-last" alt="Cake">
-            <div style="position:absolute; top:65px; right:30px; width:180px; font-size:16px; line-height:1.4;">Ok, that's all <i>babe</i> ! Enjoy your special day to the fullest! ✨</div>
-            <div class="sign-wrapper">
-                <div style="font-family:'Gellatio'; font-size:28px; color:black;">XOXO,</div>
-                <div style="font-family:'Magnolia Script'; font-size:22px; color:black;">your lifelong bestie</div>
-            </div>
-        </div>
-
+      </div>
+      <div id="hint">✉ tap to open</div>
     </div>
 
-    <script>
-        window.onload = function() {
-            const song = document.getElementById("birthday-song");
-            const playBtn = document.getElementById("play-trigger");
-            const playIcon = document.getElementById("play-icon"); 
-            const progressDot = document.getElementById("progress-dot");
-            if (playBtn && song) {
-                playBtn.onclick = function() {
-                    if (song.paused) { song.play(); playIcon.src = "icons/pause.svg"; }
-                    else { song.pause(); playIcon.src = "icons/play.svg"; }
-                };
-                song.ontimeupdate = function() {
-                    if (song.duration) {
-                        let p = (song.currentTime / song.duration) * 100;
-                        progressDot.style.left = p + "%";
-                    }
-                };
-            }
-        };
-    </script>
+    <!-- FULL CARD (muncul setelah amplop terbuka) -->
+    <div id="full-card">
+      <div class="fc-emoji">🎂</div>
+      <div class="fc-title">Selamat Hari Netas,<br/>Bestie!🐣</div>
+      <div class="fc-sub">
+        Something special is waiting for you.<br>
+        Open it and feel the joy! 🎉
+      </div>
+      <button class="fc-btn" onclick="goToMain()">Click Me →</button>
+    </div>
+
+  </div>
+
+  <script>
+    /* ============ STATE ============ */
+    let step = 0;
+
+    /* ============ OPEN ENVELOPE ============ */
+    function openEnvelope() {
+      if (step !== 0) return;
+      step = 1;
+
+      const wrap = document.getElementById('envelope-wrap');
+      wrap.classList.add('clicked');
+      wrap.style.cursor = 'default';
+
+      // 1. Buka flap
+      document.getElementById('flap').classList.add('open');
+      document.getElementById('hint').style.opacity = '0';
+      document.getElementById('seal').style.opacity = '0';
+
+      // 2. Kartu keluar dari amplop
+      setTimeout(() => {
+        document.getElementById('mini-card').classList.add('peek');
+      }, 550);
+
+      // 3. Expand ke full card
+      setTimeout(() => {
+        expandCard();
+      }, 2500);
+    }
+
+    /* ============ EXPAND CARD ============ */
+    function expandCard() {
+      step = 2;
+
+      const wrap = document.getElementById('envelope-wrap');
+      wrap.classList.add('fade-out');
+
+      setTimeout(() => {
+        wrap.style.display = 'none';
+        spawnBgDots();
+        launchConfetti();
+        document.getElementById('full-card').classList.add('show');
+      }, 380);
+    }
+
+    /* ============ GO TO MAIN PAGE ============ */
+    function goToMain() {
+      // Ganti 'index.html' dengan nama file birthday card kamu
+      window.location.href = 'card.html';
+    }
+
+    /* ============ BG DOTS ============ */
+    function spawnBgDots() {
+      const scene = document.getElementById('scene');
+      const colors = ['#f9c6d8','#c8a0e8','#a8d8f8','#f9e8a0','#b8f0d8','#ffb3d1'];
+      for (let i = 0; i < 22; i++) {
+        const d = document.createElement('div');
+        d.className = 'bg-dot';
+        const size = 10 + Math.random() * 22;
+        const delay = Math.random() * 0.4;
+        d.style.cssText = `
+          width: ${size}px;
+          height: ${size}px;
+          background: ${colors[Math.floor(Math.random() * colors.length)]};
+          left: ${Math.random() * 92}%;
+          top: ${Math.random() * 92}%;
+          --dot-opacity: ${0.25 + Math.random() * 0.45};
+          animation-delay: ${delay}s;
+        `;
+        scene.appendChild(d);
+      }
+    }
+
+    /* ============ CONFETTI ============ */
+    const _cc = document.getElementById('confetti-canvas');
+    const _cx = _cc.getContext('2d');
+    let _cp = [], _ca = null;
+
+    function resizeCanvas() {
+      _cc.width = window.innerWidth;
+      _cc.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const CONFETTI_COLORS = ['#f472b6','#c084fc','#60a5fa','#34d399','#fbbf24','#f87171','#a78bfa','#f9a8d4'];
+
+    function launchConfetti() {
+      function burst() {
+        for (let i = 0; i < 130; i++) {
+          const fromLeft = i < 65;
+          _cp.push({
+            x: fromLeft ? 0 : _cc.width,
+            y: _cc.height * (0.25 + Math.random() * 0.5),
+            vx: (fromLeft ? 1 : -1) * (4 + Math.random() * 6),
+            vy: -(5 + Math.random() * 7),
+            color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
+            size: 6 + Math.random() * 9,
+            rot: Math.random() * Math.PI * 2,
+            rotV: (Math.random() - 0.5) * 0.22,
+            shape: Math.random() > 0.5 ? 'r' : 'c',
+            life: 1
+          });
+        }
+      }
+
+      burst();
+      setTimeout(burst, 350);
+      setTimeout(burst, 700);
+
+      function loop() {
+        _cx.clearRect(0, 0, _cc.width, _cc.height);
+        _cp = _cp.filter(p => p.life > 0.02);
+        _cp.forEach(p => {
+          p.x  += p.vx;
+          p.y  += p.vy;
+          p.vy += 0.2;
+          p.vx *= 0.99;
+          p.rot += p.rotV;
+          p.life -= 0.011;
+
+          _cx.save();
+          _cx.globalAlpha = p.life;
+          _cx.fillStyle = p.color;
+          _cx.translate(p.x, p.y);
+          _cx.rotate(p.rot);
+          if (p.shape === 'r') {
+            _cx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
+          } else {
+            _cx.beginPath();
+            _cx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
+            _cx.fill();
+          }
+          _cx.restore();
+        });
+
+        if (_cp.length > 0) _ca = requestAnimationFrame(loop);
+        else _ca = null;
+      }
+
+      if (!_ca) _ca = requestAnimationFrame(loop);
+    }
+  </script>
+
 </body>
 </html>
